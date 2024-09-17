@@ -89,4 +89,20 @@ join movies m on wh.movie_id = m.movie_id
 join genres g on m.genre_id = g.genre_id
 where s.type_of_plan = 'Premium'
 group by u.username, u.country, u.email, s.type_of_plan, m.title, g.genre_name, wh.watch_date
-order by u.username desc;
+union
+select u.username,
+       u.country,
+       u.email,
+       s.type_of_plan,
+       m.title as movie_title,
+       g.genre_name,
+       wh.watch_date
+from users u
+join subscriptions s on u.user_id = s.user_id
+join watch_history wh on u.user_id = wh.user_id
+join movies m on wh.movie_id = m.movie_id
+join genres g on m.genre_id = g.genre_id
+where s.type_of_plan = 'Basic'
+group by u.username, u.country, u.email, s.type_of_plan, m.title, g.genre_name, wh.watch_date
+order by username desc;
+
