@@ -74,3 +74,19 @@ INSERT INTO watch_history (user_id, movie_id, watch_date) VALUES
 (3, 3, '2023-08-03'),
 (4, 4, '2023-08-04'),
 (5, 5, '2023-08-05');
+
+select u.username,
+       u.country,
+       u.email,
+       s.type_of_plan,
+       m.title as movie_title,
+       g.genre_name,
+       wh.watch_date
+from users u
+join subscriptions s on u.user_id = s.user_id
+join watch_history wh on u.user_id = wh.user_id
+join movies m on wh.movie_id = m.movie_id
+join genres g on m.genre_id = g.genre_id
+where s.type_of_plan = 'Premium'
+group by u.username, u.country, u.email, s.type_of_plan, m.title, g.genre_name, wh.watch_date
+order by u.username desc;
